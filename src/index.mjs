@@ -45,7 +45,6 @@ export const getPackage = async (incomingPath, allowErrors)=>{
             thisPath = incomingPath?
                 path.join(incomingPath, 'package.json'):
                 path.join(process.cwd(), 'package.json');
-            console.log('package path', thisPath, !!incomingPath);
             ensureRequire();
             return internalRequire(thisPath);
         }
