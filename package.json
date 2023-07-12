@@ -1,25 +1,72 @@
 {
-    "name": "environment-safe-package",
-    "version": "0.0.4",
-    "main": "dist/environment-safe-package.cjs",
-    "module": "src/environment-safe-package.mjs",
-    "homepage": "https://github.com/khrome/environment-safe-package",
+    "name": "@environment-safe/package",
+    "version": "0.1.0",
+    "type": "commonjs",
+    "main": "dist/index.cjs",
+    "module": "src/index.mjs",
+    "commonjs": "dist/index.cjs",
+    "exports": {
+        ".": {
+            "import": "./index.mjs",
+            "require": "./index.cjs"
+        },
+        "./package.js": {
+            "import": "./index.mjs",
+            "require": "./index.cjs"
+        },
+        "./index.js": {
+            "import": "./index.mjs",
+            "require": "./index.cjs"
+        }
+    },
+    "homepage": "https://github.com/environment-safe/package",
     "description": "Import package data in a uniform way across commonjs/modules and node/browser",
     "keywords": [
-          "package.json",
-          "browser",
-          "import"
+        "package.json",
+        "browser",
+        "import"
     ],
     "author": "Abbey Hawk Sparrow <@khrome> (http://patternweaver.com)",
     "contributors": [],
     "repository": {
-          "type": "git",
-          "url": "git@github.com:khrome/environment-safe-package.git"
-     },
+        "type": "git",
+        "url": "git@github.com:environment-safe/package.git"
+    },
     "bugs": {
-          "url": "https://github.com/khrome/environment-safe-package/issues"
+        "url": "https://github.com/environment-safe/package/issues"
     },
     "license": "MIT",
+    "moka": {
+        "firefox": {
+            "engine": "@open-automaton/playwright-mining-engine",
+            "options": {
+                "type": "firefox"
+            }
+        },
+        "chrome": {
+            "engine": "@open-automaton/playwright-mining-engine",
+            "options": {
+                "type": "chromium"
+            }
+        },
+        "safari": {
+            "engine": "@open-automaton/playwright-mining-engine",
+            "options": {
+                "type": "webkit"
+            }
+        },
+        "stub": "src/stub.mjs",
+        "stubs": [
+            "express",
+            "module",
+            "path"
+        ],
+        "shims": {
+            "chai": "node_modules/chai/chai.js",
+            "browser-or-node": "node_modules/browser-or-node/src/index.js",
+            "environment-safe-package/src/environment-safe-package.mjs": "node_modules/environment-safe-package/src/environment-safe-package.mjs"
+        }
+    },
     "devDependencies": {
         "@babel/cli": "^7.22.5",
         "@babel/core": "^7.22.5",
@@ -33,7 +80,7 @@
         "jsdoc": "^3.6.11",
         "jsdoc-to-markdown": "^8.0.0",
         "mocha": "^10.2.0",
-        "mocha-chrome": "^2.2.0",
+        "@open-automaton/moka": "^0.0.1",
         "tsd-jsdoc": "^2.5.0"
     },
     "scripts": {
@@ -41,8 +88,11 @@
         "import-test": "./node_modules/.bin/mocha test/test.mjs",
         "require-test": "./node_modules/.bin/mocha test/test.cjs",
         "build-commonjs": "./node_modules/.bin/babel src --out-dir dist --out-file-extension .cjs",
-        "headless-browser-test": "./node_modules/.bin/mocha-chrome test/headless.html --chrome-flags '[ \"--disable-web-security\", \"--disable-site-isolation-trials\", \"--allow-file-access-from-files\", \"--allow-insecure-localhost\", \"--allow-running-insecure-content\"]' --ignore-exceptions",
-        "browser-test": "open http://localhost:8000/test/browser.html; npx http-server -p 8000",
+        "headless-browser-test": "npm run headless-chrome-test; npm run headless-firefox-test; npm run headless-safari-test",
+        "headless-chrome-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --browser chrome --verbose --relaxed --prefix ../ test/test.mjs",
+        "headless-firefox-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --browser firefox --relaxed --prefix ../ test/test.mjs",
+        "headless-safari-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --browser safari --relaxed --prefix ../ test/test.mjs",
+        "browser-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --local-browser --relaxed --prefix ../ test/test.mjs",
         "container-test": "docker build . -t environment-safe-package.json -f ./containers/test.dockerfile; docker logs --follow \"$(docker run -d environment-safe-package.json)\"",
         "generate-docs": "for i in src/*.mjs; do echo \"generating docs for: ${i}\";./node_modules/.bin/jsdoc2md -c .jsdoc.json \"${i}\" > \"docs/$(basename ${i%.mjs}).md\"; done",
         "generate-types": "for i in src/*.mjs; do echo \"generating types for: ${i}\"; ./node_modules/.bin/jsdoc -t node_modules/tsd-jsdoc/dist -c .jsdoc.json \"${i}\"; mv out/types.d.ts \"src/$(basename ${i%.mjs}).d.ts\"; done; rmdir out",

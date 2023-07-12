@@ -1,5 +1,5 @@
-environment-safe-package
-========================
+@environment-safe/package
+=========================
 
 This normalizes the difference for local inclusion of package.json whether in node or the browser with no build.
 
@@ -10,7 +10,7 @@ Usage
 
 Using modules
 ```javascript
-import { getPackage } from 'environment-safe-package/src/environment-safe-package.mjs';
+import { getPackage } from '@environment-safe/package';
 (async ()=>{
     const package = await getPackage();
     //do something with the package here
@@ -19,7 +19,7 @@ import { getPackage } from 'environment-safe-package/src/environment-safe-packag
 
 Using commonjs
 ```javascript
-const { getPackage } = require('environment-safe-package');
+const { getPackage } = require('@environment-safe/package');
 (async ()=>{
     const package = await getPackage();
     //do something with the package here
