@@ -1,22 +1,22 @@
 {
     "name": "@environment-safe/package",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "type": "commonjs",
     "main": "dist/index.cjs",
     "module": "src/index.mjs",
     "commonjs": "dist/index.cjs",
     "exports": {
         ".": {
-            "import": "./index.mjs",
-            "require": "./index.cjs"
+            "import": "./src/index.mjs",
+            "require": "./dist/index.cjs"
         },
         "./package.js": {
-            "import": "./index.mjs",
-            "require": "./index.cjs"
+            "import": "./src/index.mjs",
+            "require": "./dist/index.cjs"
         },
         "./index.js": {
-            "import": "./index.mjs",
-            "require": "./index.cjs"
+            "import": "./src/index.mjs",
+            "require": "./dist/index.cjs"
         }
     },
     "homepage": "https://github.com/environment-safe/package",
@@ -59,7 +59,9 @@
         "stubs": [
             "express",
             "module",
-            "path"
+            "path",
+            "@babel/cli",
+            "@babel"
         ],
         "shims": {
             "chai": "node_modules/chai/chai.js",
@@ -89,7 +91,7 @@
         "require-test": "./node_modules/.bin/mocha test/test.cjs",
         "build-commonjs": "./node_modules/.bin/babel src --out-dir dist --out-file-extension .cjs",
         "headless-browser-test": "npm run headless-chrome-test; npm run headless-firefox-test; npm run headless-safari-test",
-        "headless-chrome-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --browser chrome --verbose --relaxed --prefix ../ test/test.mjs",
+        "headless-chrome-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --browser chrome --verbose  --relaxed --prefix ../ test/test.mjs",
         "headless-firefox-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --browser firefox --relaxed --prefix ../ test/test.mjs",
         "headless-safari-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --browser safari --relaxed --prefix ../ test/test.mjs",
         "browser-test": "node_modules/@open-automaton/moka/bin/moka.mjs --server . --local-browser --relaxed --prefix ../ test/test.mjs",
