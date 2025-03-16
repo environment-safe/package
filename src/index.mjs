@@ -47,11 +47,16 @@ export const getPackage = async (incomingPath, allowErrors)=>{
         }else{
             thisPath =  incomingPath;
             if((!thisPath) || thisPath.indexOf('/package.json') === -1){
-                thisPath = incomingPath?
-                    path.join(incomingPath, 'package.json'):
-                    path.join(process.cwd(), 'package.json');
+                thisPath = (
+                    incomingPath?
+                        path.join(incomingPath, 'package.json'):
+                        path.join(process.cwd(), 'package.json')
+                );
             }
             ensureRequire();
+            if(incomingPath === '.'){
+                thisPath = path.join(process.cwd(), thisPath);
+            }
             return internalRequire(thisPath);
         }
     }catch(ex){

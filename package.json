@@ -1,6 +1,6 @@
 {
     "name": "@environment-safe/package",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "type": "commonjs",
     "main": "dist/index.cjs",
     "module": "src/index.mjs",
